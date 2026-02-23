@@ -1,0 +1,41 @@
+# Phase 2: Core Engine Implementation Plan
+
+This plan details the implementation of the automation scripts for data sourcing, review generation, and quality control.
+
+## Proposed Changes
+
+### Automation Engine
+
+#### [NEW] [scraper.ts](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/ratingnreview/scripts/engine/scraper.ts)
+A script to fetch company data from external APIs.
+- **Google Places API:** Fetch `name`, `address` (mapped to `headquarters`), `rating`, `user_ratings_total` (mapped to `review_count`), and `website`.
+- **Crunchbase API:** Fetch `employee_count`, `funding_total`, and specific industry tags.
+- **Data Insertion:** Populate the `companies` and `industries` tables in Supabase.
+
+#### [NEW] [generator.ts](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/ratingnreview/scripts/engine/generator.ts)
+The Dual-AI review generation pipeline.
+- **Layer 1 (Gemini Pro):** Generates factual review components (pros/cons/role-specific details) based on company data.
+- **Layer 2 (Gemini Flash):** Humanizes the content using a "Casual Employee" persona, adding conversational fillers and varying sentence structures.
+- **Output:** Drafts inserted into the `reviews` table with `status = 'pending'`.
+
+#### [NEW] [validator.ts](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/ratingnreview/scripts/engine/validator.ts)
+A quality gate for generated content.
+- **Rules:**
+  - Minimum word count: 300 words.
+  - Required fields: `designation`, `location`, `likes`, `dislikes`.
+  - Content uniqueness check (basic).
+- **Action:** Updates `status` to `approved` if criteria are met.
+
+#### [NEW] [publisher.ts](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/ratingnreview/scripts/engine/publisher.ts)
+Implements the "slow-drip" scheduling logic.
+- Randomly selects a few `approved` reviews daily to set a `published_at` date or update a `is_published` flag (need to check if schema has this, or add it).
+
+## Verification Plan
+
+### Automated Tests
+- `npm run test:scraper`: Mock API responses and verify Supabase insertion.
+- `npm run test:generator`: Verify output format and humanization markers.
+
+### Manual Verification
+- Run scraper for a test company and check Supabase Studio.
+- Run generator for the same company and review the output in `reviews` table.

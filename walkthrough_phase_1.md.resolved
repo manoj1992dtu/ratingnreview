@@ -1,0 +1,42 @@
+# Walkthrough: Phase 1 - Foundation
+
+Phase 1 establishes the technical foundation for the automated company rating and review platform.
+
+## Key Accomplishments
+
+### 1. Next.js Project Initialization
+*   Initialized a fresh Next.js project using App Router, TypeScript, and Tailwind CSS.
+*   Installed core dependencies: `@supabase/supabase-js`, `lucide-react`, `zustand`, etc.
+*   Initialized **shadcn/ui** for premium component development.
+
+### 2. Database Schema (Supabase)
+Created initial migrations in `supabase/migrations/`:
+*   `0001_initial_schema.sql`: Defines tables for `industries`, `companies`, `reviews`, `company_salaries`, and `submission_rate_limit`.
+*   `0002_rls_policies.sql`: Implements Row Level Security policies for secure public and authenticated access.
+
+### 3. Environment Configuration
+*   Created `env.example` as a template for secrets.
+*   Created `.env.local` for local development.
+
+## Verification
+*   Checked `package.json` for installed dependencies.
+*   Verified directory structure and presence of migration files.
+
+### Directory Structure
+```text
+/
+├── src/
+│   ├── app/ (Public and Admin route groups to be added)
+│   ├── components/
+│   ├── lib/
+│   └── types/
+├── supabase/
+│   └── migrations/
+│       ├── 0001_initial_schema.sql
+│       └── 0002_rls_policies.sql
+├── .env.local
+└── env.example
+```
+
+> [!NOTE]
+> The project is now ready for **Phase 2: The Core Engine**, where we will build the AI-powered scrapers and generators.

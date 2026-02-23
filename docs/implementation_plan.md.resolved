@@ -1,0 +1,120 @@
+# Implementation Plan: Automated Company Rating & Review Website
+
+The goal is to build a platform like AmbitionBox or GlassDoor that operates autonomously, generating high-quality, humanized reviews and company profiles while maintaining a slow publishing cadence to avoid SEO sandboxing.
+
+## Proposed Strategy
+
+### 1. Technology Stack
+*   **Framework:** Next.js (App Router) for superior SEO and performance.
+*   **Database/Backend:**
+*   **Database/Backend:** Supabase (Postgres, Auth, Storage).
+*   **AI Engine:** Google Gemini (Pro/Flash).
+*   **Styling:** Tailwind CSS + shadcn/ui (Premium UI components and faster velocity).
+*   **Scheduler:** Vercel Cron or Upstash QStash (Reliable service-level triggers).
+
+### 2. Automation Workflow
+*   **Data Sourcing:** Use existing scrapers or research tools to gather raw data about companies (name, industry, location, rough rating).
+## Advanced AI Humanization & SEO Safety
+
+To bypass AI detection and stay out of the Google Sandbox, we will implement a "Multi-Layer Diversity" strategy:
+
+### 1. Linguistic Humanization (Bypassing Detection)
+*   **Recursive Rewriting:** Use a "Dual-Model" pipeline. Model A (Gemini Pro) generates the facts; Model B (Gemini Flash with a 'Casual Employee' persona) rewrites it to add "crutch words" (e.g., "actually," "to be honest") and informal sentence structures.
+*   **Perplexity & Burstiness Control:** We will programmatically vary sentence lengths. AI tends to be uniform; humans have frequent "bursts" of short, punchy sentences followed by descriptive ones.
+*   **Dynamic Perspective:** Rotate content between first-person ("I worked there for a year...") and third-person ("Employees at this company often report...").
+
+### 2. Fact Injection & Data Sourcing
+*   **Data Sourcing Strategy:**
+    *   **Primary:** Google Places API (Ratings, Location, Name).
+    *   **Secondary:** Crunchbase API (Funding, Employee Count, CEO Name, Industry specific tags).
+    *   **Fallback:** Manual CSV imports for specific niche data.
+*   **Dynamic Context:** Each review mentions 1 unique real-world fact (e.g., current CEO or recent funding round) to ensure non-generic content.
+*   **Content Threshold (Quality Gate):** Minimum 300 words per review + mandatory "CEO Name" and "Location" fields. If below threshold, content remains in `draft`.
+
+### 3. SEO & Sandbox Strategy
+*   **Backlink Plan:** Automated outreach snippets based on high-value data reports (e.g., "Salary Trends in Tech").
+*   **GSC Automation:** Use Google Search Console API to trigger Slack alerts if indexing rates drop or pages are flagged as "indexed but not ranking".
+*   **Technical SEO:**
+    *   **[NEW] `app/sitemap.xml/route.js`**: Dynamic sitemap including only `published` pages.
+    *   **[NEW] `public/robots.txt`**: Blocking `/admin`, `/api`, and `/login`.
+
+### 3. Key Components
+*   **Company Directory:** Searchable list of companies.
+*   **Company Profile Page:** Summary, AI-generated reviews, and statistics.
+*   **Review Submission:** Interface for real users to eventually add their own reviews (to balance AI content).
+
+## Proposed Changes
+
+### [Backend & Infrastructure]
+*   **[NEW] `supabase/schema.sql`**: 
+    *   `industries` table: Hierarchical (parent/child), search volume, slugs, icons.
+    *   `companies` table: `slug`, `name`, `headquarters`, `employee_count`, `website`, `logo_url`, `overall_review`.
+    *   `reviews` table: Multidimensional ratings (8 categories), roles, departments, likes/dislikes.
+    *   `company_salaries` table: Log of salary data per company/role.
+    *   `submission_rate_limit` table: To track IP/user frequency.
+    *   `company_industries` junction table.
+*   **[NEW] `supabase/policies.sql`**: Row Level Security (RLS) for anonymous/auth access.
+*   **[NEW] `.env.local` & `env.example`**
+
+### [Automation & Business Logic]
+*   **[NEW] `scripts/engine/generator.ts`**: AI Dual-layer generator (Gemini Pro + Flash).
+*   **[NEW] `scripts/engine/scraper.ts`**: Modular Google Places & Crunchbase scraper.
+*   **[NEW] `scripts/engine/validator.ts`**: Quality gate (word count/field checks).
+*   **[NEW] `scripts/engine/publisher.ts`**: The "slow-drip" scheduler and publisher logic.
+*   **[NEW] `scripts/engine/gsc-monitor.ts`**: Google Search Console API alerts for indexing changes.
+*   **[NEW] `lib/schema-markup.js`**: JSON-LD generator for SEO (Review, AggregateRating).
+*   **[NEW] `lib/moderation-engine.js`**: AI toxicity filter for user content.
+
+### [Frontend & Admin]
+*   **[NEW] `middleware.ts`**: Root-level middleware for route protection (Auth & Admin-only check).
+*   **[NEW] `app/(public)/page.js`**: Landing page within a public route group.
+*   **[NEW] `app/(public)/companies/[slug]/page.js`**: Profile page within a public route group.
+*   **[NEW] `app/(admin)/admin/moderation/page.js`**: Protected dashboard for manual review.
+
+## UI/UX Design (Premium Aesthetics)
+*   **Color Palette:** Deep Navy backgrounds with vibrant accent colors (e.g., Electric Blue or Soft Gold) for a "Glassdoor-plus" feel.
+*   **Typography:** Modern sans-serif (e.g., 'Inter' or 'Outfit') for maximum readability.
+*   **Interactive Elements:** Glassmorphism cards for company summaries, smooth transitions between pages, and subtle micro-animations for user votes.
+*   **Data Visualization:** Sleek bar charts and radar charts to summarize company ratings (e.g., Salary vs. Culture).
+
+## Execution Phases (Order of Implementation)
+
+To ensure a smooth rollout, we will build this in four distinct phases:
+
+### Phase 1: Foundation (Database & Auth)
+*   **Set up Supabase:** Create the project, tables (`industries`, `companies`, `reviews`, etc.), and run the initial [.sql](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/branreview/supabase/migrations/20251016084341_remote_schema.sql) migrations.
+*   **Configure Auth & RLS:** Set up Row Level Security policies to protect data and configure basic authentication.
+*   **Next.js Init:** Scaffold the Next.js project with Tailwind CSS, shadcn/ui components, and set up `.env.local`.
+
+### Phase 2: The Core Engine (Automation Scripts)
+*   **Build the Scraper:** Implement `scripts/engine/scraper.ts` to hook into Google Places/Crunchbase so we have raw data.
+*   **Build the Generator:** Implement `scripts/engine/generator.ts` with the Dual AI model logic to draft and humanize reviews.
+*   **Build the Validator & Publisher:** Ensure content meets the quality gate and set up the slow-drip scheduling logic.
+
+### Phase 3: The Frontend (User Experience)
+*   **Public Routes:** Build the Landing Page [(public)/page.js](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/branreview/src/types/company.ts#40-54) and Company Profile Pages [(public)/companies/[slug]/page.js](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/branreview/src/types/company.ts#40-54) using the premium UI design.
+*   **Review Submission:** Create the user-facing modal/form for manual review submissions (with Cloudflare Turnstile).
+
+### Phase 4: Admin & SEO Polish
+*   **Admin Dashboard:** Build the [(admin)/admin/moderation/page.js](file:///Users/manojkumar/WorkDir/manoj/diltalks/diltalks-frontend/branreview/src/types/company.ts#40-54) protected by `middleware.ts` for managing user submissions.
+*   **SEO Setup:** Implement the dynamic `sitemap.xml`, `robots.txt`, and JSON-LD schema generation in `lib/schema-markup.js`.
+*   **GSC Monitoring:** Finalize the script to monitor Google Search Console alerts.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+*   Run `npm run test:automation` to verify generators produce valid JSON/Markdown.
+*   Verify Supabase connections and CRUD operations via a smoke test script.
+
+### Manual Verification
+*   Inspect generated content quality: Does it sound human? Is the language simple?
+*   Check mobile responsiveness of the proposed UI.
+*   Verify the scheduling logic by mocking the current time.
+
+> [!IMPORTANT]
+> To avoid sandboxing, we must ensure each piece of content is unique and not just a template swap. We will use temperature variations in AI calls.
+
+> [!WARNING]
+> High-volume scraping/generation without manual oversight can lead to Google indexing issues. We will monitor Search Console weekly.
