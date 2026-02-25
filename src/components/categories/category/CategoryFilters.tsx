@@ -55,18 +55,18 @@ export default function CategoryFilters() {
   const hasActiveFilters = searchQuery || sortBy !== 'rating' || filterSize !== 'all';
 
   return (
-    <section className="bg-white border-b border-gray-200 py-6">
+    <section className="bg-background/80 backdrop-blur-md border-b border-border/50 py-6 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Search */}
-          <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md w-full group">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               placeholder="Search companies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-foreground placeholder-muted-foreground"
             />
           </form>
 
@@ -77,7 +77,7 @@ export default function CategoryFilters() {
               value={sortBy}
               onChange={(e) => updateFilters('sort', e.target.value)}
               disabled={isPending}
-              className="flex-1 md:flex-none px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-slate-700 font-medium"
+              className="flex-1 md:flex-none px-4 py-2 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-medium transition-all"
             >
               <option value="rating">Top Performance</option>
               <option value="reviews">Deepest Insights</option>
@@ -90,7 +90,7 @@ export default function CategoryFilters() {
               value={filterSize}
               onChange={(e) => updateFilters('size', e.target.value)}
               disabled={isPending}
-              className="flex-1 md:flex-none px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-gray-700"
+              className="flex-1 md:flex-none px-4 py-2 bg-muted/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed text-foreground transition-all"
             >
               <option value="all">All Sizes</option>
               <option value="startup">Startup (1-50)</option>
@@ -104,7 +104,7 @@ export default function CategoryFilters() {
               <button
                 onClick={clearFilters}
                 disabled={isPending}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-sm text-foreground hover:text-primary border border-border rounded-xl hover:bg-muted transition-colors disabled:opacity-50"
               >
                 Clear
               </button>
@@ -115,17 +115,17 @@ export default function CategoryFilters() {
         {/* Active Filters Display */}
         {hasActiveFilters && (
           <div className="mt-4 flex flex-wrap gap-2 items-center">
-            <span className="text-sm text-gray-600">Active filters:</span>
+            <span className="text-sm text-muted-foreground">Active filters:</span>
 
             {searchQuery && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-primary-hover rounded-full text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                 Search: "{searchQuery}"
                 <button
                   onClick={() => {
                     setSearchQuery('');
                     updateFilters('search', '');
                   }}
-                  className="hover:text-indigo-900"
+                  className="hover:text-primary-hover"
                 >
                   ×
                 </button>
@@ -133,11 +133,11 @@ export default function CategoryFilters() {
             )}
 
             {sortBy !== 'rating' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-primary-hover rounded-full text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                 Sort: {sortBy}
                 <button
                   onClick={() => updateFilters('sort', 'rating')}
-                  className="hover:text-indigo-900"
+                  className="hover:text-primary-hover"
                 >
                   ×
                 </button>
@@ -145,11 +145,11 @@ export default function CategoryFilters() {
             )}
 
             {filterSize !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 text-primary-hover rounded-full text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                 Size: {filterSize}
                 <button
                   onClick={() => updateFilters('size', 'all')}
-                  className="hover:text-indigo-900"
+                  className="hover:text-primary-hover"
                 >
                   ×
                 </button>
@@ -160,7 +160,7 @@ export default function CategoryFilters() {
 
         {/* Loading Indicator */}
         {isPending && (
-          <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
+          <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
             <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
             Updating results...
           </div>

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { ReviewData } from '@/components/ReviewFormPage';
 import StarRating from '@/components/StarRating';
 import CompanySearchDropdown from '../CompanySearchDropdown';
+import JobTitleDropdown from './JobTitleDropdown';
+import DepartmentDropdown from './DepartmentDropdown';
 
 interface CompanyReviewFormProps {
   data: ReviewData;
@@ -34,7 +36,7 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!data.companyName ) newErrors.companyName = 'Company name is required';
+    if (!data.companyName) newErrors.companyName = 'Company name is required';
     if (!data.overallRating) newErrors.overallRating = 'Overall rating is required';
     if (!data.workPolicy) newErrors.workPolicy = 'Work policy is required';
     if (!data.employmentType) newErrors.employmentType = 'Employment type is required';
@@ -173,9 +175,8 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
         <select
           value={data.workPolicy}
           onChange={(e) => onUpdate({ workPolicy: e.target.value })}
-          className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-            errors.workPolicy ? 'border-red-300' : 'border-gray-300'
-          }`}
+          className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.workPolicy ? 'border-red-300' : 'border-gray-300'
+            }`}
         >
           <option value="">Select work policy</option>
           <option value="Permanent WFH">Permanent WFH</option>
@@ -197,9 +198,8 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
             type="text"
             value={data.officeLocation || ''}
             onChange={(e) => onUpdate({ officeLocation: e.target.value })}
-            className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-              errors.officeLocation ? 'border-red-300' : 'border-gray-300'
-            }`}
+            className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.officeLocation ? 'border-red-300' : 'border-gray-300'
+              }`}
             placeholder="Enter office location"
           />
           {errors.officeLocation && (
@@ -243,12 +243,11 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
         <div className="grid grid-cols-2 gap-3">
           <select
             value={data.startDate?.month || ''}
-            onChange={(e) => onUpdate({ 
+            onChange={(e) => onUpdate({
               startDate: { ...data.startDate, month: e.target.value } as any
             })}
-            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-              errors.startDate ? 'border-red-300' : 'border-gray-300'
-            }`}
+            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.startDate ? 'border-red-300' : 'border-gray-300'
+              }`}
           >
             <option value="">Month</option>
             {months.map(month => (
@@ -257,12 +256,11 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
           </select>
           <select
             value={data.startDate?.year || ''}
-            onChange={(e) => onUpdate({ 
+            onChange={(e) => onUpdate({
               startDate: { ...data.startDate, year: e.target.value } as any
             })}
-            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-              errors.startDate ? 'border-red-300' : 'border-gray-300'
-            }`}
+            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.startDate ? 'border-red-300' : 'border-gray-300'
+              }`}
           >
             <option value="">Year</option>
             {years.map(year => (
@@ -283,12 +281,11 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
           <div className="grid grid-cols-2 gap-3">
             <select
               value={data.endDate?.month || ''}
-              onChange={(e) => onUpdate({ 
+              onChange={(e) => onUpdate({
                 endDate: { ...data.endDate, month: e.target.value } as any
               })}
-              className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.endDate ? 'border-red-300' : 'border-gray-300'
-              }`}
+              className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.endDate ? 'border-red-300' : 'border-gray-300'
+                }`}
             >
               <option value="">Month</option>
               {months.map(month => (
@@ -297,12 +294,11 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
             </select>
             <select
               value={data.endDate?.year || ''}
-              onChange={(e) => onUpdate({ 
+              onChange={(e) => onUpdate({
                 endDate: { ...data.endDate, year: e.target.value } as any
               })}
-              className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.endDate ? 'border-red-300' : 'border-gray-300'
-              }`}
+              className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.endDate ? 'border-red-300' : 'border-gray-300'
+                }`}
             >
               <option value="">Year</option>
               {years.map(year => (
@@ -321,12 +317,9 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Designation/Job Title (Optional)
         </label>
-        <input
-          type="text"
+        <JobTitleDropdown
           value={data.designation || ''}
-          onChange={(e) => onUpdate({ designation: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          placeholder="Enter your job title"
+          onChange={(newVal) => onUpdate({ designation: newVal })}
         />
       </div>
 
@@ -338,9 +331,8 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
         <select
           value={data.employmentType}
           onChange={(e) => onUpdate({ employmentType: e.target.value })}
-          className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-            errors.employmentType ? 'border-red-300' : 'border-gray-300'
-          }`}
+          className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.employmentType ? 'border-red-300' : 'border-gray-300'
+            }`}
         >
           <option value="">Select employment type</option>
           <option value="Full Time">Full Time</option>
@@ -359,12 +351,9 @@ const CompanyReviewForm: React.FC<CompanyReviewFormProps> = ({
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Department (Optional)
         </label>
-        <input
-          type="text"
+        <DepartmentDropdown
           value={data.department || ''}
-          onChange={(e) => onUpdate({ department: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          placeholder="Enter department"
+          onChange={(newVal) => onUpdate({ department: newVal })}
         />
       </div>
 

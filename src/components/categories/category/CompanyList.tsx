@@ -44,7 +44,7 @@ export default function CompanyList({
     setIsLoading(true);
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', String(page + 1));
-    router.push(`/categories/${industrySlug}?${params.toString()}`);
+    router.push(`/industries/${industrySlug}?${params.toString()}`);
   };
 
   /**
@@ -93,10 +93,10 @@ export default function CompanyList({
     <>
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">
+          <h2 className="text-3xl font-black text-foreground mb-2 tracking-tight">
             Workplace <span className="text-primary">Index</span>
           </h2>
-          <p className="text-slate-500 font-medium">Analyzing {total.toLocaleString()} organizations in this industry</p>
+          <p className="text-muted-foreground font-medium">Analyzing {total.toLocaleString()} organizations in this industry</p>
         </div>
 
         {page > 1 && (
@@ -107,15 +107,15 @@ export default function CompanyList({
       </div>
 
       {companies.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <div className="glass rounded-xl p-12 text-center">
           <div className="max-w-md mx-auto">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Briefcase className="h-8 w-8 text-gray-400" />
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <Briefcase className="h-8 w-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-foreground mb-2">
               No Companies Found
             </h3>
-            <p className="text-gray-500">
+            <p className="text-muted-foreground">
               Try adjusting your filters or search query to find more companies.
             </p>
           </div>
@@ -127,11 +127,11 @@ export default function CompanyList({
               <Link
                 key={company.id}
                 href={`/employers/${company.slug}`}
-                className="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-indigo-300 transition-all duration-200"
+                className="block glass rounded-xl p-6 hover:shadow-lg hover:border-primary/30 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
                   {/* Company Logo */}
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                  <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm">
                     {company.logo_url ? (
                       <img
                         src={company.logo_url}
@@ -139,7 +139,7 @@ export default function CompanyList({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-2xl font-bold text-gray-400">
+                      <span className="text-2xl font-bold text-primary">
                         {company.name.charAt(0).toUpperCase()}
                       </span>
                     )}
@@ -149,21 +149,21 @@ export default function CompanyList({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1 min-w-0 mr-4">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-1 truncate">
+                        <h3 className="text-xl font-semibold text-foreground mb-1 truncate group-hover:text-primary transition-colors">
                           {company.name}
                         </h3>
 
                         {/* Location and Size */}
-                        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                           {company.headquarters && (
                             <span className="flex items-center gap-1">
-                              <MapPin className="h-4 w-4 flex-shrink-0" />
+                              <MapPin className="h-4 w-4 flex-shrink-0 text-primary/70" />
                               <span className="truncate">{company.headquarters}</span>
                             </span>
                           )}
                           {company.employee_count && (
                             <span className="flex items-center gap-1">
-                              <Users className="h-4 w-4 flex-shrink-0" />
+                              <Users className="h-4 w-4 flex-shrink-0 text-primary/70" />
                               {formatEmployeeCount(company.employee_count)} employees
                             </span>
                           )}
@@ -172,15 +172,15 @@ export default function CompanyList({
 
                       {/* Rating Badge */}
                       {company.avg_rating && company.avg_rating > 0 ? (
-                        <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getRatingColor(company.avg_rating)}`}>
+                        <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border shadow-sm ${getRatingColor(company.avg_rating)}`}>
                           <Star className={`h-5 w-5 ${getStarColor(company.avg_rating)}`} />
                           <span className="text-lg font-bold">
                             {company.avg_rating.toFixed(1)}
                           </span>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg border bg-gray-50 text-gray-500 border-gray-200">
-                          <Star className="h-5 w-5 text-gray-400" />
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg border bg-muted/50 text-muted-foreground border-border/60">
+                          <Star className="h-5 w-5 text-muted-foreground" />
                           <span className="text-lg font-bold">N/A</span>
                         </div>
                       )}
@@ -188,19 +188,19 @@ export default function CompanyList({
 
                     {/* Description */}
                     {company.description && (
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                         {company.description}
                       </p>
                     )}
 
                     {/* Review Count */}
-                    <div className="flex items-center gap-4 text-sm">
-                      <span className="font-medium text-primary hover:text-primary-hover">
+                    <div className="flex items-center gap-4 text-sm mt-4 pt-4 border-t border-border/60">
+                      <span className="font-semibold text-primary px-2.5 py-1 bg-primary/10 rounded-md">
                         {company.review_count || 0} {company.review_count === 1 ? 'review' : 'reviews'}
                       </span>
 
                       {company.avg_rating && company.avg_rating > 0 && (
-                        <div className="flex items-center gap-1 text-gray-500">
+                        <div className="flex items-center gap-1 text-muted-foreground">
                           <TrendingUp className="h-4 w-4" />
                           <span>
                             {company.avg_rating >= 4.5 ? 'Highly Rated' :

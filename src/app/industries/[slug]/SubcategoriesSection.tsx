@@ -23,8 +23,8 @@ async function getSubcategories(parentId: string) {
   }
 }
 
-export default async function SubcategoriesSection({ 
-  parentIndustryId 
+export default async function SubcategoriesSection({
+  parentIndustryId
 }: SubcategoriesSectionProps) {
   const subcategories = await getSubcategories(parentIndustryId);
 
@@ -33,19 +33,19 @@ export default async function SubcategoriesSection({
   }
 
   return (
-    <section className="bg-white border-b border-gray-200 py-6">
+    <section className="bg-background/80 backdrop-blur-md border-b border-border/50 py-6">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Browse by Specialization
         </h2>
         <div className="flex flex-wrap gap-3">
           {subcategories.map((sub) => (
             <Link
               key={sub.id}
-              href={`/categories/${sub.slug}`}
-              className="px-4 py-2 bg-gray-100 hover:bg-indigo-100 rounded-full text-sm font-medium text-gray-700 hover:text-primary-hover transition-colors"
+              href={`/industries/${sub.slug}`}
+              className="px-4 py-2 bg-muted hover:bg-primary/20 rounded-full text-sm font-medium text-foreground hover:text-primary transition-colors border border-transparent hover:border-primary/30"
             >
-              {sub.name} ({sub.company_count || 0})
+              {sub.name} <span className="text-muted-foreground ml-1">({sub.company_count || 0})</span>
             </Link>
           ))}
         </div>

@@ -36,44 +36,41 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="glass sticky top-0 z-50 border-b border-slate-200/50">
-        <div className="max-w-screen-2xl mx-auto px-6 lg:px-12">
-          <div className="flex justify-between items-center h-24">
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="bg-indigo-600 p-2.5 rounded-2xl group-hover:bg-indigo-500 transition-all duration-500 shadow-lg shadow-indigo-600/20 group-hover:rotate-6">
-                <Building2 className="h-7 w-7 text-white" />
+      <header className="glass-strong sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between items-center h-20">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="bg-primary glow-sm p-2 rounded-lg">
+                <Building2 className="h-6 w-6 text-primary-foreground" />
               </div>
-              <span className="text-2xl font-black text-slate-900 tracking-tighter">RatingNReview</span>
+              <span className="text-xl font-bold text-foreground tracking-tight">RatingNReview</span>
             </Link>
 
-            <div className="hidden md:flex items-center space-x-12" role="navigation">
+            <div className="hidden md:flex items-center space-x-8" role="navigation">
               <Link
                 href="/"
-                className="text-slate-500 hover:text-indigo-600 transition-all font-bold text-sm uppercase tracking-widest"
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium text-sm"
               >
                 Explore
               </Link>
 
-              <div className="flex items-center gap-8 pl-8 border-l border-slate-200">
+              <div className="flex items-center gap-6 pl-6 border-l border-border">
                 {isAuthenticated ? (
-                  <div className="flex items-center gap-6">
-                    <div className="flex flex-col items-end">
-                      <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Active Member</span>
-                      <span className="text-sm text-slate-900 font-black tracking-tight">
-                        {user?.email?.split('@')[0]}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm text-foreground font-medium">
+                      {user?.email?.split('@')[0]}
+                    </span>
                     <button
                       onClick={handleSignOut}
-                      className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all border border-slate-100"
+                      className="text-sm text-muted-foreground hover:text-destructive transition-colors"
                     >
-                      <User className="h-5 w-5" />
+                      Sign Out
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={() => openModal()}
-                    className="text-slate-900 hover:text-indigo-600 transition-all font-black text-sm uppercase tracking-widest"
+                    className="text-muted-foreground hover:text-foreground transition-colors font-medium text-sm"
                   >
                     Sign In
                   </button>
@@ -81,7 +78,7 @@ const Header: React.FC = () => {
 
                 <Link
                   href="/review"
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-2xl hover:bg-indigo-500 transition-all font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20 hover:-translate-y-0.5 mt-[-2px]"
+                  className="bg-primary text-primary-foreground px-5 py-2.5 rounded hover:bg-primary/90 transition-colors font-medium text-sm shadow-sm hover:-translate-y-0.5 duration-200"
                 >
                   Write a Review
                 </Link>

@@ -12,12 +12,12 @@ import { CompanyWithMeta } from '@/types/company';
 
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ companySlug: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   try {
-    const { companySlug } = await params; // ✅ await params
-    const slug = companySlug.replace(/-reviews$/, '');
-    const company = await companyApi.getCompanyBySlug(slug);
+    const { slug } = await params; // ✅ await params
+    const cleanSlug = slug.replace(/-reviews$/, '');
+    const company = await companyApi.getCompanyBySlug(cleanSlug);
 
     return {
       title: `Working at ${company.name}: Reviews, Salaries & Culture`,
@@ -35,22 +35,22 @@ export async function generateMetadata(
 }
 
 interface CompanyPageProps {
-  params: Promise<{ companySlug: string }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function Company({ params, searchParams }: CompanyPageProps) {
-  const { companySlug } = await params;
+  const { slug } = await params;
   const { sortBy = 'newest', filterRating = 'all' } = await searchParams;
 
-  const slug = companySlug.replace(/-reviews$/, '');
+  const cleanSlug = slug.replace(/-reviews$/, '');
 
   // try {
   // Fetch data server-side for SEO
-  const company: CompanyWithMeta = await companyApi.getCompanyBySlug(slug);
+  const company: CompanyWithMeta = await companyApi.getCompanyBySlug(cleanSlug);
   const filterRatingNum = filterRating === 'all' ? undefined : parseInt(filterRating as string);
   const reviews = await reviewsApi.getCompanyReviewsBySlug(
-    slug,
+    cleanSlug,
     sortBy as string,
     filterRatingNum
   );

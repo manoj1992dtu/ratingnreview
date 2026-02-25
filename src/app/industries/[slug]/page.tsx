@@ -58,37 +58,39 @@ export default async function IndustryPage({ params, searchParams }: PageProps) 
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <section className="bg-slate-900 text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-transparent to-transparent"></div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Ambient glow effects */}
+      <div className="pointer-events-none fixed left-1/4 top-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl z-0" />
+      <div className="pointer-events-none fixed bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-accent/5 blur-3xl z-0" />
+
+      <section className="relative pt-24 pb-16 z-10">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="mb-8">
-            <Link href="/categories" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors font-bold uppercase tracking-widest text-xs">
-              <span className="p-1 bg-slate-800 rounded">←</span> Back to Industries
+            <Link href="/industries" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs">
+              <span className="p-1 glass rounded">←</span> Back to Industries
             </Link>
           </div>
 
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
-              {industry.name} <span className="text-indigo-400">Hub</span>
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight text-foreground">
+              {industry.name} <span className="text-gradient">Hub</span>
             </h1>
-            <p className="text-xl text-slate-400 mb-10 leading-relaxed font-medium">
+            <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
               {industry.description || `Comprehensive insights and anonymous feedback for the ${industry.name} industry.`}
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-5 border border-slate-700/50 flex flex-col min-w-[140px]">
-                <span className="text-3xl font-black text-white mb-1">{(industry.company_count || 0).toLocaleString()}</span>
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Organizations</span>
+              <div className="glass rounded-2xl p-5 flex flex-col min-w-[140px] hover:-translate-y-1 transition-transform duration-300">
+                <span className="text-3xl font-black text-foreground mb-1">{(industry.company_count || 0).toLocaleString()}</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Organizations</span>
               </div>
-              <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-5 border border-slate-700/50 flex flex-col min-w-[140px]">
-                <span className="text-3xl font-black text-white mb-1">{(industry.review_count || 0).toLocaleString()}</span>
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Experiences</span>
+              <div className="glass rounded-2xl p-5 flex flex-col min-w-[140px] hover:-translate-y-1 transition-transform duration-300">
+                <span className="text-3xl font-black text-foreground mb-1">{(industry.review_count || 0).toLocaleString()}</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Experiences</span>
               </div>
-              <div className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-5 border border-slate-700/50 flex flex-col min-w-[140px]">
-                <span className="text-3xl font-black text-white mb-1">{industry.avg_rating?.toFixed(1) || 'N/A'}</span>
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Avg Quality</span>
+              <div className="glass rounded-2xl p-5 flex flex-col min-w-[140px] hover:-translate-y-1 transition-transform duration-300">
+                <span className="text-3xl font-black text-foreground mb-1">{industry.avg_rating?.toFixed(1) || 'N/A'}</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Avg Quality</span>
               </div>
             </div>
           </div>
@@ -121,57 +123,57 @@ export default async function IndustryPage({ params, searchParams }: PageProps) 
       </div>
 
       {/* SEO Content Section */}
-      <section className="bg-slate-50 py-20 border-t border-slate-100">
+      <section className="py-20 relative z-10 border-t border-border bg-card/10">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-black text-slate-900 mb-8 tracking-tight">
+          <h2 className="text-3xl font-bold text-foreground mb-8 tracking-tight">
             Industry Insights: {industry.name}
           </h2>
           <div className="prose prose-slate max-w-none">
-            <p className="text-slate-600 text-lg leading-relaxed mb-6">
+            <p className="text-muted-foreground text-lg leading-relaxed mb-6">
               Gain a competitive edge by exploring unfiltered perspectives from professionals working within the {industry.name.toLowerCase()} industry.
               Our data-driven platform consolidates thousands of data points to provide a crystal-clear view of the standard workplace dynamics in this field.
             </p>
-            <p className="text-slate-600 text-lg leading-relaxed mb-10">
+            <p className="text-muted-foreground text-lg leading-relaxed mb-10">
               From established giants to disruptive startups, compare how various players in the industry stack up when it comes to long-term stability and modern workplace culture.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 glass p-8 rounded-3xl">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <Award className="h-5 w-5 text-indigo-500" />
+                <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Award className="h-5 w-5 text-primary" />
                   What to Track
                 </h3>
-                <ul className="text-slate-600 space-y-3 font-medium">
+                <ul className="text-muted-foreground space-y-3 font-medium">
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Operational Transparency
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Leadership Engagement
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Skill-Building Initiatives
                   </li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <Building className="h-5 w-5 text-indigo-500" />
+                <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Building className="h-5 w-5 text-primary" />
                   Industry Standards
                 </h3>
-                <ul className="text-slate-600 space-y-3 font-medium">
+                <ul className="text-muted-foreground space-y-3 font-medium">
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Remote-First Adoption
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Total Rewards Packages
                   </li>
                   <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                     Diversity Benchmarks
                   </li>
                 </ul>

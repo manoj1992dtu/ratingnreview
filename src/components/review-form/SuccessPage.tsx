@@ -18,57 +18,54 @@ const SuccessPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-20">
-      <div className="max-w-md mx-auto px-6">
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl p-10 text-center">
-          {/* Success Icon */}
-          <div className="mb-8">
-            <CheckCircle className="h-20 w-20 text-indigo-500 mx-auto" />
-          </div>
+    <div className="flex flex-col items-center justify-center p-8 bg-white rounded-3xl text-center">
+      {/* Success Icon */}
+      <div className="mb-6 h-24 w-24 bg-green-50 rounded-full flex items-center justify-center">
+        <CheckCircle className="h-12 w-12 text-green-500" />
+      </div>
 
-          {/* Success Message */}
-          <h1 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">
-            Insights Received.
-          </h1>
-          <p className="text-slate-500 mb-10 font-medium">
-            Your professional perspective is now live. You've helped fellow experts navigate their career path with clarity.
-          </p>
+      {/* Success Message */}
+      <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+        Review Submitted Successfully
+      </h1>
+      <p className="text-gray-500 mb-10 text-lg max-w-md">
+        Your anonymous review has been submitted and will help thousands of others make better career decisions.
+      </p>
 
-          {/* Share Section */}
-          <div className="bg-slate-900 rounded-3xl p-8 mb-8 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/20 blur-2xl rounded-full"></div>
-            <div className="flex items-center justify-center mb-6">
-              <Users className="h-10 w-10 text-indigo-400" />
-            </div>
-            <h2 className="font-bold text-white mb-3 text-lg">
-              Expand the Network
-            </h2>
-            <p className="text-sm text-slate-400 mb-6 font-medium">
-              Recommend RatingNReview to your colleagues and help build a truly transparent job market.
-            </p>
-            <button
-              onClick={handleShare}
-              className="w-full bg-indigo-600 text-white py-4 px-6 rounded-2xl hover:bg-indigo-500 transition-all font-black flex items-center justify-center space-x-2 shadow-lg shadow-indigo-900/40"
-            >
-              <Share2 className="h-5 w-5" />
-              <span>Broadcast Platform</span>
-            </button>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="space-y-4">
-            <Link href="/review">
-              <div className="w-full bg-slate-50 text-slate-900 py-4 px-6 rounded-2xl hover:bg-slate-100 transition-all font-bold text-center border border-slate-200">
-                Register New Experience
-              </div>
-            </Link>
-            <Link href="/">
-              <div className="w-full text-indigo-600 py-4 px-6 rounded-2xl hover:bg-indigo-50 transition-all font-bold text-center">
-                Return to Hub
-              </div>
-            </Link>
+      {/* Share Section */}
+      <div className="w-full max-w-sm bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-100/50 rounded-2xl p-6 mb-8 text-center">
+        <div className="flex justify-center mb-4">
+          <div className="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center">
+            <Share2 className="h-6 w-6 text-indigo-600" />
           </div>
         </div>
+        <h2 className="font-semibold text-gray-900 mb-2">
+          Help the Community Grow
+        </h2>
+        <p className="text-sm text-gray-600 mb-6 font-medium">
+          A transparent job market helps everyone. Refer a friend to share their experience.
+        </p>
+        <button
+          onClick={handleShare}
+          className="w-full bg-indigo-600 text-white hover:bg-indigo-700 py-3 px-4 rounded-xl font-medium transition-all shadow-sm flex items-center justify-center space-x-2"
+        >
+          <Share2 className="h-4 w-4" />
+          <span>Share RatingNReview</span>
+        </button>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-sm">
+        <Link href="/" className="w-full">
+          <button className="w-full bg-gray-900 text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition-all font-medium">
+            Explore Companies
+          </button>
+        </Link>
+        <Link href="/review" className="w-full">
+          <button className="w-full bg-white text-gray-700 border border-gray-200 py-3 px-4 rounded-xl hover:bg-gray-50 transition-all font-medium">
+            Write Another
+          </button>
+        </Link>
       </div>
     </div>
   );

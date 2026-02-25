@@ -131,12 +131,12 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative z-10">
       {/* Recent Reviews Card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+      <div className="glass rounded-xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-black text-slate-900 flex items-center gap-2 tracking-tight">
-            <MessageSquare className="h-5 w-5 text-indigo-500" />
+          <h3 className="text-lg font-black text-foreground flex items-center gap-2 tracking-tight">
+            <MessageSquare className="h-5 w-5 text-primary" />
             Community Feed
           </h3>
         </div>
@@ -161,10 +161,10 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
           </div>
         ) : recentReviews.length === 0 ? (
           <div className="text-center py-8">
-            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <MessageSquare className="h-6 w-6 text-gray-400" />
+            <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-3 border border-border">
+              <MessageSquare className="h-6 w-6 text-muted-foreground" />
             </div>
-            <p className="text-sm text-gray-500">No recent reviews available</p>
+            <p className="text-sm text-muted-foreground">No recent reviews available</p>
           </div>
         ) : (
           <>
@@ -172,7 +172,7 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
               {recentReviews.map((review) => (
                 <div
                   key={review.id}
-                  className="border-b border-gray-100 last:border-0 pb-4 last:pb-0 hover:bg-gray-50 -mx-2 px-2 py-2 rounded transition-colors"
+                  className="border-b border-border/50 last:border-0 pb-4 last:pb-0 hover:bg-muted/30 -mx-2 px-2 py-2 rounded transition-colors"
                 >
                   {/* Rating and Date */}
                   <div className="flex items-center justify-between mb-2">
@@ -181,24 +181,24 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
                         <Star
                           key={i}
                           className={`h-4 w-4 ${i < review.overall_rating
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
+                            ? 'fill-warning text-warning'
+                            : 'text-muted-foreground/30'
                             }`}
                         />
                       ))}
                     </div>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground">
                       {formatDate(review.created_at)}
                     </span>
                   </div>
 
                   {/* Review Excerpt */}
-                  <p className="text-sm text-gray-700 mb-2 leading-relaxed">
+                  <p className="text-sm text-foreground mb-2 leading-relaxed">
                     {getReviewExcerpt(review)}
                   </p>
 
                   {/* Reviewer Info */}
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-muted-foreground">
                     {review.designation && <span className="font-medium">{review.designation}</span>}
                     {review.designation && review.companies && <span> at </span>}
                     {review.companies && (
@@ -229,17 +229,17 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
       </div>
 
       {/* Top Rated Badge */}
-      <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-200 p-6 shadow-sm">
-        <Award className="h-8 w-8 text-yellow-600 mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+      <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-warning">
+        <Award className="h-8 w-8 text-warning mb-3" />
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           Top Rated Companies
         </h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Companies with 4.5+ ratings and 100+ reviews in this industry
         </p>
         <Link
           href="#top-rated"
-          className="inline-flex items-center gap-2 text-sm text-yellow-700 hover:text-yellow-800 font-medium group"
+          className="inline-flex items-center gap-2 text-sm text-warning-foreground hover:text-warning font-medium group"
         >
           See all winners
           <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -247,17 +247,17 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
       </div>
 
       {/* Industry Insights */}
-      <div className="bg-gradient-to-br from-indigo-50 to-indigo-50 rounded-xl border border-indigo-200 p-6 shadow-sm">
+      <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-primary">
         <TrendingUp className="h-8 w-8 text-primary mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           Industry Insights
         </h3>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Discover trends, salary data, and career growth opportunities
         </p>
         <Link
           href="#insights"
-          className="inline-flex items-center gap-2 text-sm text-primary-hover hover:text-indigo-800 font-medium group"
+          className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover font-medium group"
         >
           View insights
           <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -265,58 +265,58 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
       </div>
 
       {/* CTA Box */}
-      <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/20 blur-2xl rounded-full"></div>
-        <h3 className="text-xl font-black mb-3 tracking-tight">
+      <div className="glass-strong rounded-3xl p-8 shadow-xl relative overflow-hidden bg-primary/5">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full"></div>
+        <h3 className="text-xl font-black mb-3 tracking-tight text-foreground relative z-10">
           Share Your Insight
         </h3>
-        <p className="text-sm text-slate-400 mb-6 font-medium">
+        <p className="text-sm text-muted-foreground mb-6 font-medium relative z-10">
           Contribute to the most transparent workplace database in the industry.
         </p>
         <Link
           href="/review"
-          className="block w-full bg-indigo-600 text-white text-center px-4 py-4 rounded-2xl font-black shadow-lg shadow-indigo-900/40 hover:bg-indigo-500 transition-all uppercase tracking-widest text-xs"
+          className="relative z-10 block w-full bg-primary text-primary-foreground text-center px-4 py-4 rounded-xl font-bold shadow hover:bg-primary-hover hover:-translate-y-0.5 transition-all text-sm"
         >
           Begin Review
         </Link>
-        <p className="text-[10px] text-slate-500 mt-4 text-center font-bold uppercase tracking-widest">
+        <p className="text-[10px] text-muted-foreground mt-4 text-center font-bold uppercase tracking-widest relative z-10">
           100% Anonymous • 2 Minute Survey
         </p>
       </div>
 
       {/* Helpful Stats Box */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">
+      <div className="glass rounded-xl p-6 shadow-sm">
+        <h3 className="text-sm font-semibold text-foreground mb-4">
           Why Reviews Matter
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <ThumbsUp className="h-4 w-4 text-green-600" />
+            <div className="w-8 h-8 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <ThumbsUp className="h-4 w-4 text-success" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">Authentic Insights</p>
-              <p className="text-xs text-gray-600">Real experiences from current and former employees</p>
+              <p className="text-sm font-medium text-foreground">Authentic Insights</p>
+              <p className="text-xs text-muted-foreground">Real experiences from current and former employees</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <TrendingUp className="h-4 w-4 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">Make Informed Decisions</p>
-              <p className="text-xs text-gray-600">Compare companies and find the right fit</p>
+              <p className="text-sm font-medium text-foreground">Make Informed Decisions</p>
+              <p className="text-xs text-muted-foreground">Compare companies and find the right fit</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <MessageSquare className="h-4 w-4 text-purple-600" />
+            <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <MessageSquare className="h-4 w-4 text-accent" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">Help Others</p>
-              <p className="text-xs text-gray-600">Your review helps job seekers worldwide</p>
+              <p className="text-sm font-medium text-foreground">Help Others</p>
+              <p className="text-xs text-muted-foreground">Your review helps job seekers worldwide</p>
             </div>
           </div>
         </div>
