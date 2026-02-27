@@ -49,7 +49,7 @@ To bypass AI detection and stay out of the Google Sandbox, we will implement a "
 *   **[NEW] `supabase/schema.sql`**: 
     *   `industries` table: Hierarchical (parent/child), search volume, slugs, icons.
     *   `companies` table: `slug`, `name`, `headquarters`, `employee_count`, `website`, `logo_url`, `overall_review`.
-    *   `reviews` table: Multidimensional ratings (8 categories), roles, departments, likes/dislikes.
+    *   `company_reviews` table: Multidimensional ratings (8 categories), roles, departments, likes/dislikes.
     *   `company_salaries` table: Log of salary data per company/role.
     *   `submission_rate_limit` table: To track IP/user frequency.
     *   `company_industries` junction table.

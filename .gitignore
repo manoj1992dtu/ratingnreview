@@ -32,6 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+*.json
+!package.json
+!tsconfig.json
+!*sample.json
+!*seed.json
+!*data.json
+/supabase/*.json
 
 # vercel
 .vercel

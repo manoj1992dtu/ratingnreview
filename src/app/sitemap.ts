@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const { data, error } = await supabase
         .from('companies')
         .select('slug, updated_at')
-        .eq('is_active', true) // ✅ filter active companies
+        .eq('status', 'published') // ✅ filter active companies
         .order('id', { ascending: true }) // Use primary key for stable ordering
         .range(offset, offset + chunkSize - 1)
 
@@ -72,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 1.0,
       },
       {
-        url: `${baseUrl}/categories`,
+        url: `${baseUrl}/industries`,
         lastModified: new Date(),
         changeFrequency: 'hourly',
         priority: 0.9,
@@ -81,7 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Company routes
     const companyRoutes: MetadataRoute.Sitemap = allCompanies.map((company) => ({
-      url: `${baseUrl}/employers/${generateSlug(company.slug)}`,
+      url: `${baseUrl}/companies/${generateSlug(company.slug)}`,
       lastModified: new Date(company.updated_at || new Date()),
       changeFrequency: 'daily',
       priority: 0.8,
@@ -89,7 +89,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Industry routes
     const industryRoutes: MetadataRoute.Sitemap = allIndustries.map((industry) => ({
-      url: `${baseUrl}/categories/${generateSlug(industry.slug)}`,
+      url: `${baseUrl}/industries/${generateSlug(industry.slug)}`,
       lastModified: new Date(industry.updated_at || new Date()),
       changeFrequency: 'daily',
       priority: 0.7,

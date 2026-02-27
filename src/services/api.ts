@@ -177,7 +177,7 @@ export const companyApi = {
       .from('company_reviews')
       .select('overall_rating, work_life_balance, salary, promotions, job_security, skill_development, work_satisfaction, company_culture')
       .eq('company_id', companyId)
-      .eq('is_active', true);
+      .eq('status', 'published');
 
     if (reviewsError) throw reviewsError;
 
@@ -287,7 +287,7 @@ export const companyApi = {
           *,
           company_reviews(count)
         `)
-        .eq('is_active', true)
+        .eq('status', 'published')
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -301,7 +301,7 @@ export const companyApi = {
               .from('company_reviews')
               .select('overall_rating')
               .eq('company_id', company.id)
-              .eq('is_active', true);
+              .eq('status', 'published');
 
             const reviewCount = reviews?.length || 0;
             const avgRating = reviews && reviewCount > 0
@@ -410,7 +410,7 @@ export const reviewsApi = {
       companies(name, industry)
     `)
       .eq('company_id', companyId)
-      .eq('is_active', true);
+      .eq('status', 'published');
 
     if (filterRating) {
       query = query.eq('overall_rating', filterRating);
