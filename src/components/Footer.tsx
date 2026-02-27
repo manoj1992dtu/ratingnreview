@@ -13,7 +13,7 @@ const Footer = () => {
                             <div className="bg-primary glow-sm p-2 rounded-lg">
                                 <Building2 className="h-6 w-6 text-primary-foreground" />
                             </div>
-                            <span className="text-xl font-bold text-foreground tracking-tight">RatingNReview</span>
+                            <span className="text-xl font-bold text-foreground tracking-tight">RatingNReviews</span>
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                             Read anonymous employee reviews and ratings to make informed career decisions.
@@ -64,7 +64,7 @@ const Footer = () => {
 
                 <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-xs text-muted-foreground font-medium">
-                        &copy; {currentYear} RatingNReview. Built for a more transparent future.
+                        &copy; {currentYear} RatingNReviews. Built for a more transparent future.
                     </p>
                     <div className="flex gap-8 text-xs font-bold text-muted-foreground uppercase tracking-widest">
                         <span className="flex items-center gap-2">

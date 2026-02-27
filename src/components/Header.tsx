@@ -43,7 +43,7 @@ const Header: React.FC = () => {
               <div className="bg-primary glow-sm p-2 rounded-lg">
                 <Building2 className="h-6 w-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground tracking-tight">RatingNReview</span>
+              <span className="text-xl font-bold text-foreground tracking-tight">RatingNReviews</span>
             </Link>
 
             <div className="hidden md:flex items-center space-x-8" role="navigation">

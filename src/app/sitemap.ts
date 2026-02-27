@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Extend timeout to 60 seconds
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ratingnreview.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ratingnreviews.com'
 
   try {
     const chunkSize = 1000

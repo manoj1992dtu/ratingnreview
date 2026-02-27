@@ -49,7 +49,7 @@ async function makeRequest(url: string, method: string = 'GET', body?: string): 
 // Submit to Google via Indexing API (requires service account)
 async function submitToGoogle(sitemapUrl: string): Promise<SubmissionResult> {
   const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
-  
+
   if (!serviceAccountJson) {
     console.log('[SubmitSitemap] ⏭️ Skipping Google (no service account configured)');
     return {
@@ -61,13 +61,13 @@ async function submitToGoogle(sitemapUrl: string): Promise<SubmissionResult> {
 
   try {
     console.log('[SubmitSitemap] Submitting to Google Indexing API...');
-    
+
     // Parse service account credentials
     const credentials = JSON.parse(serviceAccountJson);
-    
+
     // Get OAuth token
     const jwtToken = await getGoogleAccessToken(credentials);
-    
+
     // Submit URL for indexing
     const response = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
       method: 'POST',
@@ -111,7 +111,7 @@ async function submitToGoogle(sitemapUrl: string): Promise<SubmissionResult> {
 // Get Google OAuth access token
 async function getGoogleAccessToken(credentials: any): Promise<string> {
   const jwt = require('jsonwebtoken');
-  
+
   const now = Math.floor(Date.now() / 1000);
   const claim = {
     iss: credentials.client_email,
@@ -122,7 +122,7 @@ async function getGoogleAccessToken(credentials: any): Promise<string> {
   };
 
   const token = jwt.sign(claim, credentials.private_key, { algorithm: 'RS256' });
- 
+
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -136,7 +136,7 @@ async function getGoogleAccessToken(credentials: any): Promise<string> {
 // Submit to Bing via Webmaster API
 async function submitToBing(sitemapUrl: string): Promise<SubmissionResult> {
   const bingApiKey = process.env.BING_WEBMASTER_API_KEY;
-  
+
   if (!bingApiKey) {
     console.log('[SubmitSitemap] ⏭️ Skipping Bing API (no API key configured)');
     return {
@@ -148,10 +148,10 @@ async function submitToBing(sitemapUrl: string): Promise<SubmissionResult> {
 
   try {
     console.log('[SubmitSitemap] Submitting to Bing Webmaster API...');
-    
+
     // Extract domain from sitemap URL
     const siteUrl = new URL(sitemapUrl).origin;
-    
+
     const response = await fetch(`https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=${bingApiKey}`, {
       method: 'POST',
       headers: {
@@ -201,7 +201,7 @@ async function submitToIndexNow(sitemapUrl: string, apiKey: string): Promise<Sub
 
   try {
     console.log('[SubmitSitemap] Submitting to IndexNow...');
-    
+
     // Extract host from sitemap URL
     const urlObj = new URL(sitemapUrl);
     const host = urlObj.hostname;
@@ -251,7 +251,7 @@ async function submitToIndexNow(sitemapUrl: string, apiKey: string): Promise<Sub
 async function validateSitemap(sitemapUrl: string): Promise<{ valid: boolean; urlCount?: number; sizeMB?: number; error?: string }> {
   try {
     console.log('[SubmitSitemap] 🔍 Validating sitemap...');
-    
+
     const response = await makeRequest(sitemapUrl, 'GET');
 
     if (response.statusCode !== 200) {
@@ -375,7 +375,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       );
     }
 
-    const sitemapUrl = process.env.SITEMAP_URL || 'https://ratingnreview.com/sitemap.xml';
+    const sitemapUrl = process.env.SITEMAP_URL || 'https://ratingnreviews.com/sitemap.xml';
     const indexNowKey = process.env.INDEXNOW_KEY || '';
 
     console.log('[SubmitSitemap] 🗺️ Starting sitemap submission...');

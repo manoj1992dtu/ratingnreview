@@ -6,15 +6,15 @@ export function generateCompanyJsonLd(company: Company, reviews?: CompanyReview[
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": `https://ratingnreview.com/employers/${company.slug}`,
+    "@id": `https://ratingnreviews.com/employers/${company.slug}`,
     "name": company.name,
     "url": company.website,
-    // "logo": `${company.logo_url || 'https://ratingnreview.com/logo/'+company.slug+'.png'}`,   
+    // "logo": `${company.logo_url || 'https://ratingnreviews.com/logo/'+company.slug+'.png'}`,   
 
     // Existing properties...
     "aggregateRating": reviews?.length ? {
       "@type": "AggregateRating",
-      "@id": `https://ratingnreview.com/employers/${company.slug}#aggregate-rating`, // ← This was missing!
+      "@id": `https://ratingnreviews.com/employers/${company.slug}#aggregate-rating`, // ← This was missing!
       "ratingValue": calculateOverallAverageRating(reviews),
       "reviewCount": reviews.length,
       "bestRating": "5",
@@ -41,12 +41,12 @@ export function generateCompanyJsonLd(company: Company, reviews?: CompanyReview[
     
     "review": reviews?.map(review => ({
       "@type": "Review",
-      // "@id": `https://ratingnreview.com/employers/${company.slug}-review/categories/${review.id}`,
-      "@id": `https://ratingnreview.com/employers/${company.slug}#review-${review.id}`, // ← This was missing!
+      // "@id": `https://ratingnreviews.com/employers/${company.slug}-review/categories/${review.id}`,
+      "@id": `https://ratingnreviews.com/employers/${company.slug}#review-${review.id}`, // ← This was missing!
 
       "reviewRating": {
         "@type": "Rating",
-        // "@id": `https://ratingnreview.com/companies/${company.id}/categories/${review.id}#rating`,
+        // "@id": `https://ratingnreviews.com/companies/${company.id}/categories/${review.id}#rating`,
 
         "ratingValue": review.overall_rating,
         "bestRating": "5",
@@ -68,7 +68,7 @@ export function generateCompanyJsonLd(company: Company, reviews?: CompanyReview[
       },
       "publisher": {
         "@type": "Organization",
-        "name": "RatingNReview"
+        "name": "RatingNReviews"
       },
       "positiveNotes": review.likes,
       "negativeNotes": review.dislikes,

@@ -6,8 +6,8 @@ const SuccessPage: React.FC = () => {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'RatingNReview - Anonymous Company Reviews',
-        text: 'Check out RatingNReview for honest company reviews and workplace insights!',
+        title: 'RatingNReviews - Anonymous Company Reviews',
+        text: 'Check out RatingNReviews for honest company reviews and workplace insights!',
         url: window.location.origin,
       });
     } else {
@@ -44,7 +44,7 @@ const SuccessPage: React.FC = () => {
               Expand the Network
             </h2>
             <p className="text-sm text-slate-400 mb-6 font-medium">
-              Recommend RatingNReview to your colleagues and help build a truly transparent job market.
+              Recommend RatingNReviews to your colleagues and help build a truly transparent job market.
             </p>
             <button
               onClick={handleShare}

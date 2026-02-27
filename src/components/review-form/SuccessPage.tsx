@@ -6,8 +6,8 @@ const SuccessPage: React.FC = () => {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'RatingNReview - Anonymous Company Reviews',
-        text: 'Check out RatingNReview for honest company reviews and workplace insights!',
+        title: 'RatingNReviews - Anonymous Company Reviews',
+        text: 'Check out RatingNReviews for honest company reviews and workplace insights!',
         url: window.location.origin,
       });
     } else {
@@ -50,7 +50,7 @@ const SuccessPage: React.FC = () => {
           className="w-full bg-indigo-600 text-white hover:bg-indigo-700 py-3 px-4 rounded-xl font-medium transition-all shadow-sm flex items-center justify-center space-x-2"
         >
           <Share2 className="h-4 w-4" />
-          <span>Share RatingNReview</span>
+          <span>Share RatingNReviews</span>
         </button>
       </div>
 
