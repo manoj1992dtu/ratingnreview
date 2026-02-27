@@ -41,7 +41,7 @@ SET default_table_access_method = "heap";
 
 
 CREATE TABLE IF NOT EXISTS "public"."admin_users" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "user_id" "uuid" NOT NULL,
     "role" "text" DEFAULT 'moderator'::"text",
     "created_at" timestamp with time zone DEFAULT "now"(),
@@ -49,14 +49,12 @@ CREATE TABLE IF NOT EXISTS "public"."admin_users" (
     CONSTRAINT "admin_users_role_check" CHECK (("role" = ANY (ARRAY['super_admin'::"text", 'moderator'::"text"])))
 );
 
-
 ALTER TABLE "public"."admin_users" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."companies" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "name" "text" NOT NULL,
-    "slug" "text" NOT NULL,
+    "slug" "text" UNIQUE NOT NULL,
     "industry" "text",
     "headquarters" "text",
     "employee_count" "text",
@@ -85,23 +83,20 @@ CREATE TABLE IF NOT EXISTS "public"."companies" (
     CONSTRAINT "companies_status_check" CHECK (("status" = ANY (ARRAY['draft'::"text", 'published'::"text", 'archived'::"text"])))
 );
 
-
 ALTER TABLE "public"."companies" OWNER TO "postgres";
-
 
 CREATE TABLE IF NOT EXISTS "public"."company_industries" (
     "company_id" "uuid" NOT NULL,
     "industry_id" "uuid" NOT NULL,
     "is_primary" boolean DEFAULT false,
-    "is_active" boolean DEFAULT true
+    "is_active" boolean DEFAULT true,
+    PRIMARY KEY ("company_id", "industry_id")
 );
-
 
 ALTER TABLE "public"."company_industries" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."company_reviews" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "company_id" "uuid" NOT NULL,
     "user_id" "uuid",
     "is_anonymous" boolean DEFAULT true,
@@ -140,12 +135,10 @@ CREATE TABLE IF NOT EXISTS "public"."company_reviews" (
     CONSTRAINT "reviews_work_satisfaction_check" CHECK ((("work_satisfaction" >= 1) AND ("work_satisfaction" <= 5)))
 );
 
-
 ALTER TABLE "public"."company_reviews" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."company_salaries" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "company_id" "uuid" NOT NULL,
     "role" "text" NOT NULL,
     "department" "text",
@@ -165,14 +158,12 @@ CREATE TABLE IF NOT EXISTS "public"."company_salaries" (
     CONSTRAINT "company_salaries_status_check" CHECK (("status" = ANY (ARRAY['pending'::"text", 'approved'::"text", 'rejected'::"text"])))
 );
 
-
 ALTER TABLE "public"."company_salaries" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."industries" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "name" "text" NOT NULL,
-    "slug" "text" NOT NULL,
+    "slug" "text" UNIQUE NOT NULL,
     "description" "text",
     "icon" "text",
     "parent_industry_id" "uuid",
@@ -190,12 +181,10 @@ CREATE TABLE IF NOT EXISTS "public"."industries" (
     "stats_updated_at" timestamp with time zone DEFAULT "now"()
 );
 
-
 ALTER TABLE "public"."industries" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."interview_experiences" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "company_id" "uuid" NOT NULL,
     "user_id" "uuid",
     "role" "text",
@@ -214,14 +203,12 @@ CREATE TABLE IF NOT EXISTS "public"."interview_experiences" (
     CONSTRAINT "interview_experiences_status_check" CHECK (("status" = ANY (ARRAY['pending'::"text", 'approved'::"text", 'rejected'::"text"])))
 );
 
-
 ALTER TABLE "public"."interview_experiences" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."scrape_queue" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "gen_random_uuid"(),
     "company_name" "text" NOT NULL,
-    "slug" "text" NOT NULL,
+    "slug" "text" UNIQUE NOT NULL,
     "status" "text" DEFAULT 'pending'::"text" NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"(),
@@ -230,12 +217,10 @@ CREATE TABLE IF NOT EXISTS "public"."scrape_queue" (
     CONSTRAINT "scrape_queue_status_check" CHECK (("status" = ANY (ARRAY['pending'::"text", 'completed'::"text", 'failed'::"text"])))
 );
 
-
 ALTER TABLE "public"."scrape_queue" OWNER TO "postgres";
 
-
 CREATE TABLE IF NOT EXISTS "public"."submission_rate_limit" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "id" "uuid" PRIMARY KEY DEFAULT "extensions"."uuid_generate_v4"(),
     "ip_address" "text" NOT NULL,
     "user_id" "uuid",
     "submission_type" "text" NOT NULL,
@@ -243,67 +228,9 @@ CREATE TABLE IF NOT EXISTS "public"."submission_rate_limit" (
     "count_today" integer DEFAULT 1
 );
 
-
 ALTER TABLE "public"."submission_rate_limit" OWNER TO "postgres";
 
-
-ALTER TABLE ONLY "public"."admin_users"
-    ADD CONSTRAINT "admin_users_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."companies"
-    ADD CONSTRAINT "companies_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."companies"
-    ADD CONSTRAINT "companies_slug_key" UNIQUE ("slug");
-
-
-
-ALTER TABLE ONLY "public"."company_industries"
-    ADD CONSTRAINT "company_industries_pkey" PRIMARY KEY ("company_id", "industry_id");
-
-
-
-ALTER TABLE ONLY "public"."company_salaries"
-    ADD CONSTRAINT "company_salaries_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."industries"
-    ADD CONSTRAINT "industries_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."industries"
-    ADD CONSTRAINT "industries_slug_key" UNIQUE ("slug");
-
-
-
-ALTER TABLE ONLY "public"."interview_experiences"
-    ADD CONSTRAINT "interview_experiences_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."company_reviews"
-    ADD CONSTRAINT "reviews_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."scrape_queue"
-    ADD CONSTRAINT "scrape_queue_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."scrape_queue"
-    ADD CONSTRAINT "scrape_queue_slug_key" UNIQUE ("slug");
-
-
-
-ALTER TABLE ONLY "public"."submission_rate_limit"
-    ADD CONSTRAINT "submission_rate_limit_pkey" PRIMARY KEY ("id");
+-- All constraints migrated to inline! Fresh push enabled.
 
 
 
