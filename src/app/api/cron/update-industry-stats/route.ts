@@ -3,11 +3,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// Use service role key for cron jobs
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Helper to get Supabase client safely
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    throw new Error('Supabase URL or Key is missing');
+  }
+
+  return createClient(url, key);
+}
 
 // Define types for the nested query response
 type ReviewData = {
@@ -17,9 +23,10 @@ type ReviewData = {
 }[];
 
 export async function POST(request: NextRequest) {
+  const supabase = getSupabase();
   // 1. VERIFY AUTHORIZATION
   const authHeader = request.headers.get('authorization');
-  
+
   // Vercel Cron sends this header
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -58,7 +65,7 @@ export async function POST(request: NextRequest) {
 
         // Type assertion and safe data extraction
         const typedData = (reviewData as unknown as ReviewData) || [];
-        
+
         const allReviews = typedData
           .filter(d => d.companies !== null)
           .flatMap(d => d.companies!.reviews || [])
@@ -105,11 +112,11 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('[CRON] Fatal error:', error);
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );

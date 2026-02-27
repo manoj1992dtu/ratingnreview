@@ -23,15 +23,21 @@ interface UpdateResponse {
   error?: string;
 }
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Helper to get Supabase client safely
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  if (!url || !key) {
+    throw new Error('Supabase URL or Key is missing');
+  }
+
+  return createClient(url, key);
+}
 
 export async function POST(request: NextRequest): Promise<NextResponse<UpdateResponse>> {
   try {
+    const supabase = getSupabase();
     // Security: Verify authorization
     const authHeader = request.headers.get('Authorization');
     const cronSecret = process.env.CRON_SECRET;
@@ -129,9 +135,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<UpdateRes
   } catch (error) {
     console.error('❌ [UpdateTimestamp] Error:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
