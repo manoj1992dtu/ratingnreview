@@ -265,20 +265,28 @@ async function scrapeMetadata() {
         }
 
         // --- NEW LOGIC: Pre-validation of Seed Website ---
-        if (item.website) {
-            const siteUrl = item.website.startsWith('http') ? item.website : `https://${item.website}`;
-            logger.info(`Pinging seeded website for ${company}: ${siteUrl}...`);
-            const isValid = await checkWebsiteValid(siteUrl);
+        if (!item.website) {
+            logger.warn(`Skipping "${company}" - No website provided in seed data. Deactivating in queue.`);
+            await supabaseAdmin.from('scrape_queue').update({
+                status: 'website_inactive',
+                notes: 'No website available to scrape'
+            }).eq('id', item.id);
+            skippedCount++;
+            continue;
+        }
 
-            if (!isValid) {
-                logger.warn(`Skipping "${company}" - Website (${siteUrl}) is dead/inactive. Deactivating in queue.`);
-                await supabaseAdmin.from('scrape_queue').update({
-                    status: 'website_inactive',
-                    notes: 'Website appears inactive or dead during pre-scrape check'
-                }).eq('id', item.id);
-                skippedCount++;
-                continue;
-            }
+        const siteUrl = item.website.startsWith('http') ? item.website : `https://${item.website}`;
+        logger.info(`Pinging seeded website for ${company}: ${siteUrl}...`);
+        const isValid = await checkWebsiteValid(siteUrl);
+
+        if (!isValid) {
+            logger.warn(`Skipping "${company}" - Website (${siteUrl}) is dead/inactive. Deactivating in queue.`);
+            await supabaseAdmin.from('scrape_queue').update({
+                status: 'website_inactive',
+                notes: 'Website appears inactive or dead during pre-scrape check'
+            }).eq('id', item.id);
+            skippedCount++;
+            continue;
         }
         // ------------------------------------------------
 
