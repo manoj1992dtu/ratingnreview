@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx supabase link --project-ref $SUPABASE_PROJECT_ID && npx supabase db push --no-interactive && next build",
+    "build": "npx supabase link --project-ref $SUPABASE_PROJECT_ID && npx supabase db push --yes && next build",
     "start": "next start",
     "lint": "eslint",
     "engine:scrape": "tsx scripts/engine/scraper.ts",
