@@ -106,7 +106,7 @@ export default function HomePageClient({
         </div>
       </section>
 
-      {/* Industries Section */}
+      {/* Industries Section
       <section className="container mx-auto px-4 py-20 relative" aria-labelledby="industries-heading">
         <div className="max-w-7xl mx-auto">
           <header className="mb-10 text-center">
@@ -148,7 +148,7 @@ export default function HomePageClient({
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Featured Companies */}
       <section className="container mx-auto px-4 py-20" aria-labelledby="top-workplaces-title">

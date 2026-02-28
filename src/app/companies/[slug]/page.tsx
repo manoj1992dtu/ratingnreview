@@ -11,6 +11,11 @@ import { CompanyWithMeta } from '@/types/company';
 
 
 
+// Cache company pages for 1 hour (3600 seconds) to balance performance with fresh review data.
+// Since the AI engine publishes once daily and real users submit reviews occasionally, 1 hour 
+// ensures high Vercel cache hit rates while never letting content get too stale.
+export const revalidate = 3600;
+
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {

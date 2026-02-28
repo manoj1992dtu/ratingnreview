@@ -99,6 +99,8 @@ export const metadata: Metadata = {
 // }
 // Fetch data on the server ✅
 
+export const revalidate = 3600; // Cache home page for 1 hour
+
 export default async function Home() {
   // Fetch data on server ✅
   const [primaryIndustries, additionalIndustries, featuredCompanies] = await Promise.all([
