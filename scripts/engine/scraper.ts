@@ -100,9 +100,10 @@ async function getCompanyLogo(company: {
     return null;
 }
 
-async function fetchCompanyMetadata(companyName: string): Promise<ScrapedCompanyData | null> {
+async function fetchCompanyMetadata(companyName: string, knownWebsite: string | null): Promise<ScrapedCompanyData | null> {
     const prompt = `
 Return factual metadata for the company: "${companyName}".
+${knownWebsite ? `Use this as the official known website context: ${knownWebsite}` : ''}
 This is for a company review platform focused on the Indian job market.
 
 Respond ONLY in raw JSON with no markdown formatting.
@@ -199,7 +200,7 @@ async function scrapeMetadata() {
     // 1. Fetch 2 Giants
     const { data: giants, error: giantsError } = await supabaseAdmin
         .from('scrape_queue')
-        .select('id, company_name, slug, priority')
+        .select('id, company_name, slug, priority, website')
         .eq('status', 'pending')
         .gte('priority', 8)
         .order('priority', { ascending: false })
@@ -208,7 +209,7 @@ async function scrapeMetadata() {
     // 2. Fetch 5 Niche
     const { data: niche, error: nicheError } = await supabaseAdmin
         .from('scrape_queue')
-        .select('id, company_name, slug, priority')
+        .select('id, company_name, slug, priority, website')
         .eq('status', 'pending')
         .lte('priority', 2)
         .order('priority', { ascending: true })
@@ -263,8 +264,26 @@ async function scrapeMetadata() {
             continue;
         }
 
+        // --- NEW LOGIC: Pre-validation of Seed Website ---
+        if (item.website) {
+            const siteUrl = item.website.startsWith('http') ? item.website : `https://${item.website}`;
+            logger.info(`Pinging seeded website for ${company}: ${siteUrl}...`);
+            const isValid = await checkWebsiteValid(siteUrl);
+
+            if (!isValid) {
+                logger.warn(`Skipping "${company}" - Website (${siteUrl}) is dead/inactive. Deactivating in queue.`);
+                await supabaseAdmin.from('scrape_queue').update({
+                    status: 'website_inactive',
+                    notes: 'Website appears inactive or dead during pre-scrape check'
+                }).eq('id', item.id);
+                skippedCount++;
+                continue;
+            }
+        }
+        // ------------------------------------------------
+
         logger.info(`Fetching AI metadata for: ${company}...`);
-        const extractedData = await fetchCompanyMetadata(company);
+        const extractedData = await fetchCompanyMetadata(company, item.website || null);
 
         if (!extractedData) {
             await supabaseAdmin.from('scrape_queue').update({ status: 'failed' }).eq('id', item.id);

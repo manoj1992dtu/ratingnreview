@@ -79,6 +79,7 @@ async function main() {
             slug: c.slug,
             status: 'pending',
             employee_count: c.employee_count,
+            website: c.website,
             priority: calculatePriority(c.employee_count)
         }));
 
