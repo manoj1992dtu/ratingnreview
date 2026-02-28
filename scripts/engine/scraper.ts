@@ -48,6 +48,58 @@ function validateScrapedData(data: Partial<ScrapedCompanyData>): boolean {
     return true;
 }
 
+// Helper: Check if URL returns valid image
+async function urlExists(url: string): Promise<boolean> {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok && !!response.headers.get('content-type')?.includes('image');
+    } catch {
+        return false;
+    }
+}
+
+// Helper: Check if a company's website actually resolves
+async function checkWebsiteValid(url: string): Promise<boolean> {
+    try {
+        // Use a generic User-Agent since many firewalls block default fetch user-agents
+        const response = await fetch(url, {
+            method: 'HEAD',
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+        });
+        // Consider it "valid" if the server responds at all (even a 403 Forbidden means the site exists)
+        return response.status < 500;
+    } catch {
+        return false; // DNS failure, connection refused, etc.
+    }
+}
+
+async function getCompanyLogo(company: {
+    domain: string;
+    name: string;
+    slug: string;
+}): Promise<string | null> {
+    // Priority 1: Clearbit (primary)
+    const clearbitUrl = `https://logo.clearbit.com/${company.domain}`;
+    if (await urlExists(clearbitUrl)) {
+        return clearbitUrl;
+    }
+
+    // Priority 2: Google S2 Favicon Service (fallback)
+    const googleUrl = `https://www.google.com/s2/favicons?domain=${company.domain}&sz=128`;
+    if (await urlExists(googleUrl)) {
+        return googleUrl;
+    }
+
+    // Priority 3: Company website directly
+    const directUrl = `https://${company.domain}/favicon.ico`;
+    if (await urlExists(directUrl)) {
+        return directUrl;
+    }
+
+    // Return null to let the frontend handle the placeholder
+    return null;
+}
+
 async function fetchCompanyMetadata(companyName: string): Promise<ScrapedCompanyData | null> {
     const prompt = `
 Return factual metadata for the company: "${companyName}".
@@ -222,6 +274,40 @@ async function scrapeMetadata() {
 
         const finalSlug = tempSlug;
 
+        let finalWebsite = extractedData.website;
+        let siteUrlForLogo = null;
+        let logoUrl = null;
+
+        if (finalWebsite) {
+            try {
+                const siteUrl = finalWebsite.startsWith('http') ? finalWebsite : `https://${finalWebsite}`;
+                const isValid = await checkWebsiteValid(siteUrl);
+
+                if (isValid) {
+                    finalWebsite = siteUrl; // Save the verified, fully-qualified URL
+                    siteUrlForLogo = siteUrl;
+                } else {
+                    logger.warn(`Website ${siteUrl} appears dead or invalid. Scrubbing URL to protect user experience.`);
+                    finalWebsite = ""; // Still list the company, just don't link to a dead site
+                }
+            } catch (e) {
+                finalWebsite = "";
+            }
+        }
+
+        if (siteUrlForLogo) {
+            try {
+                const hostname = new URL(siteUrlForLogo).hostname.replace('www.', '');
+                logoUrl = await getCompanyLogo({
+                    domain: hostname,
+                    name: extractedData.name,
+                    slug: finalSlug
+                });
+            } catch (e) {
+                // Ignore URL parsing errors
+            }
+        }
+
         const payload = {
             name: extractedData.name,
             slug: finalSlug,
@@ -234,7 +320,8 @@ async function scrapeMetadata() {
             state: extractedData.state,
             country: extractedData.country,
             employee_count: extractedData.employee_count,
-            website: extractedData.website,
+            website: finalWebsite,
+            logo_url: logoUrl,
             description: extractedData.description,
             ceo_name: extractedData.ceo_name,
             founded_year: extractedData.founded_year,
