@@ -40,10 +40,13 @@ const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-3">
-              <div className="bg-primary glow-sm p-2 rounded-lg">
-                <Building2 className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-bold text-foreground tracking-tight">RatingNReviews</span>
+              <Image
+                src="/logo.svg"
+                alt="RatingNReview Logo"
+                width={180}
+                height={36}
+                priority
+              />
             </Link>
 
             <div className="hidden md:flex items-center space-x-8" role="navigation">

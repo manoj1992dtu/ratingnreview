@@ -44,6 +44,7 @@ export const companyApi = {
       let query = supabase
         .from("companies")
         .select(fields.join(","))
+        .eq('status', 'published')
         .order("name");
 
       if (search) query = query.ilike("name", `%${search}%`);
@@ -164,6 +165,7 @@ export const companyApi = {
       .from('companies')
       .select('*')
       .eq('slug', slug)
+      .eq('status', 'published')
       .single();
 
     if (companyError) throw companyError;

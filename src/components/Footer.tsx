@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Building2, Github, Twitter, Linkedin, Mail } from 'lucide-react';
 
 const Footer = () => {
@@ -10,10 +11,12 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     <div className="col-span-1 md:col-span-1">
                         <Link href="/" className="flex items-center gap-3 mb-6">
-                            <div className="bg-primary glow-sm p-2 rounded-lg">
-                                <Building2 className="h-6 w-6 text-primary-foreground" />
-                            </div>
-                            <span className="text-xl font-bold text-foreground tracking-tight">RatingNReviews</span>
+                            <Image
+                                src="/logo.svg"
+                                alt="RatingNReview Logo"
+                                width={180}
+                                height={36}
+                            />
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                             Read anonymous employee reviews and ratings to make informed career decisions.
