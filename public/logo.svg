@@ -1,0 +1,21 @@
+<svg width="240" height="48" viewBox="0 0 240 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dynamic Gradient -->
+  <defs>
+    <linearGradient id="brandGradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0c85ca"/> <!-- Primary Blue -->
+      <stop offset="0.5" stop-color="#0ea5e9"/> <!-- Sky Blue -->
+      <stop offset="1" stop-color="#1ba677"/> <!-- Accent Green -->
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(8, 8)">
+    <!-- Base Chat Bubble -->
+    <path d="M26.6667 4H5.33333C2.38781 4 0 6.38781 0 9.33333V26.6667C0 29.6122 2.38781 32 5.33333 32H10.6667L16 38.6667L21.3333 32H26.6667C29.6122 32 32 29.6122 32 26.6667V9.33333C32 6.38781 29.6122 4 26.6667 4Z" fill="url(#brandGradient)"/>
+    
+    <!-- Cutout Star -->
+    <path d="M16 9.33333L17.854 15.0396H23.8541L19 18.5668L20.854 24.2731L16 20.7459L11.146 24.2731L13 18.5668L8.14593 15.0396H14.146L16 9.33333Z" fill="white"/>
+  </g>
+
+  <!-- Typography -->
+  <text transform="translate(48 32)" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.5">Rating<tspan fill="#0c85ca">N</tspan>Review</text>
+</svg>

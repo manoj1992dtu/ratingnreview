@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brandGradient" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0c85ca"/> <!-- Primary Blue -->
+      <stop offset="0.5" stop-color="#0ea5e9"/> <!-- Sky Blue -->
+      <stop offset="1" stop-color="#1ba677"/> <!-- Accent Green -->
+    </linearGradient>
+  </defs>
+
+  <!-- Base Chat Bubble -->
+  <path d="M426.667 64H85.3333C50.0039 64 21.3333 92.6705 21.3333 128V384C21.3333 419.329 50.0039 448 85.3333 448H170.667L256 533.333L341.333 448H426.667C461.996 448 490.667 419.329 490.667 384V128C490.667 92.6705 461.996 64 426.667 64Z" fill="url(#brandGradient)"/>
+  
+  <!-- Cutout Star -->
+  <path d="M256 160L286.91 255.132H386.911L306.001 313.882L336.91 409.014L256 350.264L175.09 409.014L205.999 313.882L125.089 255.132H225.09L256 160Z" fill="white"/>
+</svg>
