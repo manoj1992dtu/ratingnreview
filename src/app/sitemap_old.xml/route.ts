@@ -8,7 +8,6 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // ✅ Enable ISR caching
 export const revalidate = 43200 // 12 hours
-
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ratingnreviews.com'
   const chunkSize = 1000
