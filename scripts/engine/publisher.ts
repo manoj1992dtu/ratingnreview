@@ -25,10 +25,10 @@ let wouldFlipToPublished: string[] = [];
 let wouldSchedule: { id: string, plannedTimestamp: string, type: 'review' | 'company' }[] = [];
 
 // --- Configurable Time Settings ---
-const REVIEW_MIN_HOURS = 12;
-const REVIEW_MAX_HOURS = 36;
+const REVIEW_MIN_HOURS = 120;
+const REVIEW_MAX_HOURS = 168;
 const COMPANY_MIN_HOURS = 18;
-const COMPANY_MAX_HOURS = 30;
+const COMPANY_MAX_HOURS = 32;
 
 /**
  * PHASE A: Flip "Due" logic for Reviews.
