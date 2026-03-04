@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     description: 'Uncover the truth about your next employer with verified anonymous employee reviews.',
     images: [
       {
-        url: 'https://ratingnreviews.com/og-default.png',
+        url: '/og-default.png',
         width: 1200,
         height: 630,
         alt: 'RatingNReviews - Anonymous Employee Reviews',
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'RatingNReviews - Real Workplace Insights',
     description: 'Verified anonymous employee reviews and culture insights.',
-    images: ['https://ratingnreviews.com/og-default.png'],
+    images: ['/og-default.png'],
   },
 
   // Metadata base URL

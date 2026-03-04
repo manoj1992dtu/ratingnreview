@@ -37,7 +37,7 @@ const Footer = () => {
                     <div>
                         <h3 className="text-foreground font-semibold mb-4 text-sm">Navigation</h3>
                         <ul className="space-y-3 text-sm">
-                            <li><Link href="/" className="text-muted-foreground hover:text-primary transition-colors">Home Feed</Link></li>
+                            <li><Link href="/companies" className="text-muted-foreground hover:text-primary transition-colors">Companies</Link></li>
                             <li><Link href="/industries" className="text-muted-foreground hover:text-primary transition-colors">Browse Industries</Link></li>
                             <li><Link href="/review" className="text-muted-foreground hover:text-primary transition-colors">Submit Experience</Link></li>
                             <li><Link href="/companies" className="text-muted-foreground hover:text-primary transition-colors">Verified Companies</Link></li>
@@ -46,22 +46,24 @@ const Footer = () => {
 
                     <div>
                         <h3 className="text-foreground font-semibold mb-4 text-sm">Resources</h3>
-                        <ul className="space-y-3 text-sm">
+                        {/* <ul className="space-y-3 text-sm">
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Salary Trends</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Interview Guides</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Company Culture</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Career Blog</Link></li>
-                        </ul>
+                        </ul> */}
+                        <p className="text-muted-foreground text-xs italic">Coming soon...</p>
                     </div>
 
                     <div>
                         <h3 className="text-foreground font-semibold mb-4 text-sm">Legal & Trust</h3>
-                        <ul className="space-y-3 text-sm">
+                        {/* <ul className="space-y-3 text-sm">
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Review Guidelines</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Verification Process</Link></li>
-                        </ul>
+                        </ul> */}
+                        <p className="text-muted-foreground text-xs italic">Coming soon...</p>
                     </div>
                 </div>
 
