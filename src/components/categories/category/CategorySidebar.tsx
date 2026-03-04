@@ -230,7 +230,7 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
       </div>
 
       {/* Top Rated Badge */}
-      <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-warning">
+      {/* <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-warning">
         <Award className="h-8 w-8 text-warning mb-3" />
         <h3 className="text-lg font-semibold text-foreground mb-2">
           Top Rated Companies
@@ -245,10 +245,10 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
           See all winners
           <span className="group-hover:translate-x-1 transition-transform">→</span>
         </Link>
-      </div>
+      </div> */}
 
       {/* Industry Insights */}
-      <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-primary">
+      {/* <div className="glass rounded-xl p-6 shadow-sm border-l-4 border-l-primary">
         <TrendingUp className="h-8 w-8 text-primary mb-3" />
         <h3 className="text-lg font-semibold text-foreground mb-2">
           Industry Insights
@@ -263,7 +263,7 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
           View insights
           <span className="group-hover:translate-x-1 transition-transform">→</span>
         </Link>
-      </div>
+      </div> */}
 
       {/* CTA Box */}
       <div className="glass-strong rounded-3xl p-8 shadow-xl relative overflow-hidden bg-primary/5">
