@@ -66,6 +66,7 @@ export default function CategorySidebar({ industryId }: CategorySidebarProps) {
             )
           `)
           .in('company_id', companyIds)
+          .eq('status', 'published')
           .order('created_at', { ascending: false })
           .limit(5);
 

@@ -18,6 +18,7 @@ export async function GET() {
     const { data, error } = await supabase
       .from('companies')
       .select('slug, updated_at')
+      .eq('status', 'published')
       .order('updated_at', { ascending: true })
       .range(from, from + chunkSize - 1)
 

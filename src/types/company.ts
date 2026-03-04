@@ -32,14 +32,16 @@ export type CompanyReview = {
   likes?: string;
   dislikes?: string;
   is_anonymous: boolean;
+  status?: 'published' | 'draft' | 'pending';
+  published_at?: string;
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
   // companies?: Company;
 };
 
-export type Company  = {
+export type Company = {
   id?: string;
-  slug: string; 
+  slug: string;
   name: string;
   industry?: string;
   headquarters?: string;
@@ -48,6 +50,8 @@ export type Company  = {
   logo_url?: string;
   description?: string;
   overall_review?: string;
+  status?: 'published' | 'draft' | 'pending';
+  published_at?: string;
   created_at: string;
   updated_at: string;
 }

@@ -49,6 +49,7 @@ export async function getAllIndustries(
       .from('industries')
       .select('*', { count: 'exact', head: true })
       .eq('is_active', true);
+    // Note: industries don't have status/published_at yet, but if they did we'd add it here.
 
     if (options?.primaryOnly) {
       countQuery = countQuery.eq('is_primary', true);
@@ -226,7 +227,9 @@ export async function getIndustryCompanies(
           .from('company_reviews')
           .select('company_id, overall_rating')
           .in('company_id', companyIds)
-          .eq('is_active', true);
+          .eq('is_active', true)
+          .eq('status', 'published')
+          .lte('published_at', new Date().toISOString());
 
 
         // Calculate stats per company
@@ -334,15 +337,17 @@ export async function getIndustryStats(): Promise<IndustryStats> {
       supabase
         .from('companies')
         .select('id', { count: 'exact', head: true })
-        .eq('is_active', true),
+        .eq('is_active', true)
+        .eq('status', 'published'),
       supabase
         .from('company_reviews')
         .select('*', { count: 'exact', head: true })
-        .eq('is_active', true),
+        .eq('is_active', true)
+        .eq('status', 'published'),
       supabase
         .from('industries')
         .select('*', { count: 'exact', head: true })
-        .eq('is_active', true),
+        .eq('is_active', true)
     ]);
 
     // For unique companies, we need to fetch and deduplicate   

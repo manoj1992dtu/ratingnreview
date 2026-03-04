@@ -50,7 +50,8 @@ export async function getIndustriesWithStats(): Promise<IndustryWithStats[]> {
         if (companyIds.length > 0) {
           const { data: reviewStats, error: reviewError } = await supabase
             .from('company_reviews')
-            .select('overall_rating')
+            .select('company_id, overall_rating')
+            .eq('status', 'published')
             .in('company_id', companyIds)
             .eq('is_active', true);
 
@@ -117,6 +118,7 @@ export async function getIndustryBySlug(slug: string): Promise<IndustryWithStats
       const { data: reviewStats } = await supabase
         .from('company_reviews')
         .select('overall_rating')
+        .eq('status', 'published')
         .in('company_id', companyIds)
         .eq('is_active', true);
 
@@ -239,7 +241,8 @@ export async function getIndustryStats(): Promise<IndustryStats> {
     const { count: totalReviews, error: reviewError } = await supabase
       .from('company_reviews')
       .select('*', { count: 'exact', head: true })
-      .eq('is_active', true);
+      .eq('is_active', true)
+      .eq('status', 'published');
 
     if (reviewError) throw reviewError;
 
