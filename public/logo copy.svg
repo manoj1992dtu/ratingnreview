@@ -16,5 +16,5 @@
   </g>
 
   <!-- Typography -->
-  <text transform="translate(48 32)" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.5">Rating<tspan fill="#4F46E5">N</tspan>Review</text>
+  <text transform="translate(48 32)" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" letter-spacing="-0.5">Rating<tspan fill="#4F46E5">N</tspan>Reviews</text>
 </svg>

@@ -1,6 +1,6 @@
-# RatingNReview URL Structure & SEO Priority
+# RatingNReviews URL Structure & SEO Priority
 
-This document outlines the finalized URL structure for the RatingNReview project, mapped by SEO priority and implementation phase.
+This document outlines the finalized URL structure for the RatingNReviews project, mapped by SEO priority and implementation phase.
 
 ## Phase 3: Core Infrastructure (Current Focus)
 

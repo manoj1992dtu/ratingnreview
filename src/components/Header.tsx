@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             <Link href="/" className="flex items-center gap-3">
               <Image
                 src="/logo.svg"
-                alt="RatingNReview Logo"
+                alt="RatingNReviews Logo"
                 width={180}
                 height={36}
                 priority

@@ -10,7 +10,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export const revalidate = 43200 // 12 hours
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ratingnreview.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ratingnreviews.com'
   const chunkSize = 1000
   let from = 0
   let allCompanies: any[] = []
@@ -35,7 +35,7 @@ export async function GET() {
   const daysPassed = Math.floor(
     (Date.now() - releaseStart.getTime()) / (1000 * 60 * 60 * 24)
   )
-  const maxCompaniesToShow = Math.max(releaseCount + daysPassed * 20,2124);
+  const maxCompaniesToShow = Math.max(releaseCount + daysPassed * 20, 2124);
   const limitedCompanies = allCompanies.slice(0, maxCompaniesToShow)
 
   // Build XML
@@ -57,15 +57,15 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
-  .map(
-    (u) => `<url>
+      .map(
+        (u) => `<url>
   <loc>${u.loc}</loc>
   <lastmod>${u.lastmod}</lastmod>
   <changefreq>${u.changefreq}</changefreq>
   <priority>${u.priority}</priority>
 </url>`
-  )
-  .join('\n')}
+      )
+      .join('\n')}
 </urlset>`
   console.log(`sitemap.xml/route.ts ${limitedCompanies.length}`)
   return new NextResponse(xml, {
