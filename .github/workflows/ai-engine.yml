@@ -48,3 +48,14 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npx tsx scripts/engine/publisher.ts --batch-size=1
+
+      - name: Submit Sitemap
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL || 'https://ratingnreviews.com' }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          curl -X POST "$BASE_URL/api/cron/submit-sitemap" \
+          -H "Authorization: Bearer $CRON_SECRET" \
+          -H "Content-Type: application/json"

@@ -108,10 +108,10 @@ async function submitToGoogle(sitemapUrl: string): Promise<SubmissionResult> {
   }
 }
 
+import jwt from 'jsonwebtoken';
+
 // Get Google OAuth access token
 async function getGoogleAccessToken(credentials: any): Promise<string> {
-  const jwt = require('jsonwebtoken');
-
   const now = Math.floor(Date.now() / 1000);
   const claim = {
     iss: credentials.client_email,

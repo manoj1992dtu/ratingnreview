@@ -280,7 +280,7 @@ async function processCompany(company: any) {
         .from('company_reviews')
         .select('*', { count: 'exact', head: true })
         .eq('company_id', company.id)
-        .eq('status', 'pending');
+        .eq('status', 'pending_validation');
 
     if (countErr) {
         logger.error(`  [DB Error] Could not fetch pending count: ${countErr.message}`);
@@ -519,8 +519,8 @@ async function startGenerator() {
         process.exit(1);
     }
 
-    // Initialize query focusing on Draft companies
-    let query = supabaseAdmin.from('companies').select('*').eq('status', 'draft');
+    // Initialize query focusing on Draft companies OR Published companies with 0 reviews
+    let query = supabaseAdmin.from('companies').select('*').or('status.eq.draft,status.eq.published');
 
     // CLI targeting
     if (options.companies !== 'all') {
