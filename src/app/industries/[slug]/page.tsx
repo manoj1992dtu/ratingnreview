@@ -30,9 +30,17 @@ export async function generateMetadata({ params }: PageProps) {
     };
   }
 
+  // Determine if this is "thin content" (e.g., fewer than 5 companies)
+  const isThinContent = (industry.company_count || 0) < 5;
+
   return {
     title: `${industry.meta_title}|| ${industry.name} Company Reviews | Employee Reviews`,
     description: industry.meta_description || industry.description,
+    robots: {
+      index: !isThinContent,
+      follow: true,
+      nocache: isThinContent,
+    }
   };
 }
 

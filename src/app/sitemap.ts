@@ -48,11 +48,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     }
 
-    // Fetch all industries
+    // Fetch all industries with at least 5 companies
     const { data: industries, error: industryError } = await supabase
       .from('industries')
-      .select('slug, updated_at')
-      .eq('is_active', true) // ✅ filter active companies
+      .select('slug, updated_at, company_count')
+      .eq('is_active', true)
+      .gte('company_count', 5) // ✅ Only index categories with real value
       .order('id', { ascending: true })
 
     if (industryError) {
