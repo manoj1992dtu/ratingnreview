@@ -284,7 +284,6 @@ export const companyApi = {
   async getFeaturedCompanies(limit = 8) {
     try {
       // First, get the most recently reviewed companies
-      // we sort by published_at with standard ordering
       const { data, error } = await supabase
         .from('companies')
         .select(`
@@ -292,6 +291,7 @@ export const companyApi = {
           company_reviews(count)
         `)
         .eq('status', 'published')
+        .order('review_count', { ascending: false })
         .order('published_at', { ascending: false, nullsFirst: false })
         .limit(limit);
 
