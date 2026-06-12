@@ -3,13 +3,12 @@
 // to:
 // src/app/employers/[companySlug]/page.tsx
 import { companyApi, reviewsApi } from '../../../services/api';
+import { getCompanyIndustries, getRelatedCompanies } from '@/services/industries';
 import CompanyPage from '@/components/CompanyPage';
 import type { Metadata } from "next";
 import { generateCompanyJsonLd } from '@/lib/jsonld';
 import JsonLd from '@/components/JsonLd';
 import { CompanyWithMeta } from '@/types/company';
-
-
 
 // Cache company pages for 1 hour (3600 seconds) to balance performance with fresh review data.
 // Since the AI engine publishes once daily and real users submit reviews occasionally, 1 hour 
@@ -24,17 +23,19 @@ export async function generateMetadata(
     const cleanSlug = slug.replace(/-reviews$/, '');
     const company = await companyApi.getCompanyBySlug(cleanSlug);
 
+    // Fetch industry for context
+    const industries = await getCompanyIndustries(company.id!);
+    const primaryIndustry = industries.find(i => i.is_primary) || industries[0];
+    const industryName = primaryIndustry?.name || 'various sectors';
+
     return {
-      title: `Working at ${company.name}: Reviews, Salaries & Culture`,
+      title: `${company.name} Employee Reviews & Ratings | ${industryName}`,
       description: `Is ${company.name} a good place to work? Check out ${company.reviewCount} unfiltered employee ratings and insights. Current overall score: ${company.ratings.overall} stars.`,
     };
   } catch {
     return {
       title: "Company Reviews",
       description: "Employee reviews and company ratings",
-      //  title: "Company Employee Reviews & Ratings",
-      // description: "Read authentic employee reviews, ratings, and workplace insights to make informed career decisions.",
-      // keywords: "employee reviews, company ratings, workplace culture, job reviews, career insights"
     };
   }
 }
@@ -50,7 +51,6 @@ export default async function Company({ params, searchParams }: CompanyPageProps
 
   const cleanSlug = slug.replace(/-reviews$/, '');
 
-  // try {
   // Fetch data server-side for SEO
   const company: CompanyWithMeta = await companyApi.getCompanyBySlug(cleanSlug);
   const filterRatingNum = filterRating === 'all' ? undefined : parseInt(filterRating as string);
@@ -59,9 +59,18 @@ export default async function Company({ params, searchParams }: CompanyPageProps
     sortBy as string,
     filterRatingNum
   );
+
+  // Fetch industry for breadcrumbs and related companies
+  const industries = await getCompanyIndustries(company.id!);
+  const primaryIndustry = industries.find(i => i.is_primary) || industries[0];
+
+  // Fetch related companies in the same industry
+  let relatedCompanies: any[] = [];
+  if (primaryIndustry) {
+    relatedCompanies = await getRelatedCompanies(primaryIndustry.id, company.id!, 24);
+  }
+
   const jsonLd = generateCompanyJsonLd(company, reviews);
-
-
 
   return (
     <>
@@ -69,6 +78,8 @@ export default async function Company({ params, searchParams }: CompanyPageProps
       <CompanyPage
         company={company}
         initialReviews={reviews}
+        industry={primaryIndustry}
+        relatedCompanies={relatedCompanies}
         initialFilters={{
           sortBy: sortBy as any,
           filterRating: filterRating as any

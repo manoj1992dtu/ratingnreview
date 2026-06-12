@@ -566,3 +566,68 @@ export async function getIndustriesByIds(ids: string[]) {
 // export async function getCompanyIndustries(companyId: string) {
 //   return await getIndustriesForCompany(companyId);
 // }
+
+/**
+ * Helper: Seed-based deterministic shuffle for a list
+ */
+function seedShuffle<T>(array: T[], seed: string): T[] {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) {
+    h = (h << 5) - h + seed.charCodeAt(i);
+    h |= 0;
+  }
+  
+  const random = () => {
+    const x = Math.sin(h++) * 10000;
+    return x - Math.floor(x);
+  };
+
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = temp;
+  }
+  return shuffled;
+}
+
+/**
+ * Service: Get related companies in the same industry with deterministic shuffle
+ */
+export async function getRelatedCompanies(
+  industryId: string,
+  currentCompanyId: string,
+  limit: number = 6
+): Promise<any[]> {
+  try {
+    const { data, error } = await supabase
+      .from('company_industries')
+      .select(`
+        companies (
+          id,
+          slug,
+          name,
+          logo_url
+        )
+      `)
+      .eq('industry_id', industryId)
+      .eq('is_active', true)
+      .limit(100); // Pool of up to 100 companies
+
+    if (error) throw error;
+
+    const companies = (data || [])
+      .map((ci: any) => ci.companies)
+      .filter((c: any) => c && c.id !== currentCompanyId);
+
+    // Deterministically shuffle based on currentCompanyId to ensure stable pagination/SEO links
+    const shuffled = seedShuffle(companies, currentCompanyId);
+
+    return shuffled.slice(0, limit);
+  } catch (error) {
+    console.error('Error fetching related companies:', error);
+    return [];
+  }
+}
+
