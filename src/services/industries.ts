@@ -185,7 +185,6 @@ export async function getIndustryCompanies(
       .select(`
         company_id,
         is_primary,
-        display_order,
         companies (
           id,
           slug,
@@ -204,9 +203,9 @@ export async function getIndustryCompanies(
       query = query.eq('is_primary', true);
     }
 
-    // Only order by display_order at database level
+    // Only order by is_primary at database level
     // We'll handle other sorting in memory
-    query = query.order('display_order', { ascending: true });
+    query = query.order('is_primary', { ascending: false });
 
     const { data, error } = await query;
     if (error) throw error;
@@ -216,7 +215,7 @@ export async function getIndustryCompanies(
       .filter(Boolean);
 
     // If we need to sort by rating or reviews, fetch review stats
-    const orderBy = options?.orderBy || 'display_order';
+    const orderBy = options?.orderBy || 'is_primary';
 
     if (orderBy === 'rating' || orderBy === 'reviews') {
       const companyIds = companies.map(c => c.id);
@@ -378,7 +377,6 @@ export async function getCompanyIndustries(companyId: string) {
       .from('company_industries')
       .select(`
         is_primary,
-        display_order,
         industries (
           id,
           name,
@@ -387,8 +385,7 @@ export async function getCompanyIndustries(companyId: string) {
         )
       `)
       .eq('company_id', companyId)
-      .order('is_primary', { ascending: false })
-      .order('display_order', { ascending: true });
+      .order('is_primary', { ascending: false });
 
     if (error) throw error;
 
