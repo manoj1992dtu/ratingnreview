@@ -20,6 +20,8 @@ interface PageProps {
   }>;
 }
 
+// export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const industry = await getIndustry(slug);

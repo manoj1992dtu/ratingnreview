@@ -11,10 +11,12 @@ export const metadata: Metadata = {
   keywords: 'industry reviews, company reviews by industry, tech companies, finance companies, healthcare companies, employee reviews',
 };
 
+// export const dynamic = 'force-dynamic';
+
 export default async function AllIndustriesServer() {
   // Fetch data in parallel
   const [groupedIndustries, stats] = await Promise.all([
-    getGroupedIndustries({primaryLimit:7}),
+    getGroupedIndustries({ primaryLimit: 7 }),
     getIndustryStats(),
   ]);
   // console.log("groupedIndustries",groupedIndustries[0].industries[0])
@@ -32,7 +34,7 @@ export default async function AllIndustriesServer() {
   }
 
   return (
-    <AllIndustriesClient 
+    <AllIndustriesClient
       industries={groupedIndustries}
       stats={stats}
     />
